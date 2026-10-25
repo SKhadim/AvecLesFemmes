@@ -30,6 +30,9 @@ class Groupement
     #[ORM\OneToMany(targetEntity: AbstractCampagne::class, mappedBy: 'groupement')]
     private Collection $campagnes;
 
+    #[ORM\OneToOne(mappedBy: 'groupement', cascade: ['persist', 'remove'])]
+    private ?Caisse $caisse = null;
+
     public function __construct()
     {
         $this->membres = new ArrayCollection();
@@ -109,6 +112,23 @@ class Groupement
                 $groupement->setGroupement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCaisse(): ?Caisse
+    {
+        return $this->caisse;
+    }
+
+    public function setCaisse(Caisse $caisse): static
+    {
+        // set the owning side of the relation if necessary
+        if ($caisse->getGroupement() !== $this) {
+            $caisse->setGroupement($this);
+        }
+
+        $this->caisse = $caisse;
 
         return $this;
     }
