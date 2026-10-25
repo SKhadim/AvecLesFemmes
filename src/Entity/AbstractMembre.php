@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\FonctionMembre;
 use App\Repository\AbstractMembreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AbstractMembreRepository::class)]
@@ -34,6 +36,17 @@ abstract class AbstractMembre
 
     #[ORM\Column(enumType: FonctionMembre::class)]
     private ?FonctionMembre $fonction = null;
+
+    /**
+     * @var Collection<int, ModePaiement>
+     */
+    #[ORM\OneToMany(targetEntity: ModePaiement::class, mappedBy: 'membre')]
+    private Collection $yes;
+
+    public function __construct()
+    {
+        $this->yes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,6 +121,36 @@ abstract class AbstractMembre
     public function setFonction(FonctionMembre $fonction): static
     {
         $this->fonction = $fonction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ModePaiement>
+     */
+    public function getYes(): Collection
+    {
+        return $this->yes;
+    }
+
+    public function addYe(ModePaiement $ye): static
+    {
+        if (!$this->yes->contains($ye)) {
+            $this->yes->add($ye);
+            $ye->setMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeYe(ModePaiement $ye): static
+    {
+        if ($this->yes->removeElement($ye)) {
+            // set the owning side to null (unless already changed)
+            if ($ye->getMembre() === $this) {
+                $ye->setMembre(null);
+            }
+        }
 
         return $this;
     }
