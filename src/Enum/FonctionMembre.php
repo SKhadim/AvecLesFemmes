@@ -8,7 +8,7 @@ enum FonctionMembre: string
     case SECRETAIRE = 'SECRETAIRE';
     case RESPONSABLE = 'RESPONSABLE';
 
-     public function getLibelle(): string
+    public function getLibelle(): string
     {
         return match ($this) {
             self::MEMBRE_SIMPLE => 'Membre simple',
