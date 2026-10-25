@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AbstractCampagneRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AbstractCampagneRepository::class)]
@@ -27,6 +29,17 @@ abstract class AbstractCampagne
 
     #[ORM\Column]
     private ?float $montant = null;
+
+    /**
+     * @var Collection<int, ModePaiement>
+     */
+    #[ORM\OneToMany(targetEntity: ModePaiement::class, mappedBy: 'campagne')]
+    private Collection $yes;
+
+    public function __construct()
+    {
+        $this->yes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,6 +90,36 @@ abstract class AbstractCampagne
     public function setMontant(float $montant): static
     {
         $this->montant = $montant;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ModePaiement>
+     */
+    public function getYes(): Collection
+    {
+        return $this->yes;
+    }
+
+    public function addYe(ModePaiement $ye): static
+    {
+        if (!$this->yes->contains($ye)) {
+            $this->yes->add($ye);
+            $ye->setCampagne($this);
+        }
+
+        return $this;
+    }
+
+    public function removeYe(ModePaiement $ye): static
+    {
+        if ($this->yes->removeElement($ye)) {
+            // set the owning side to null (unless already changed)
+            if ($ye->getCampagne() === $this) {
+                $ye->setCampagne(null);
+            }
+        }
 
         return $this;
     }
