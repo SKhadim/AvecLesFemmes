@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\AbstractCampagneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+#[ORM\DiscriminatorMap(['tontine' => CampagneTontine::class])]
 #[ORM\Entity(repositoryClass: AbstractCampagneRepository::class)]
 class AbstractCampagne
 {

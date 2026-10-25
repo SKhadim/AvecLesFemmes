@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AbstractMembreRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['admin' => Admin::class])]
 #[ORM\DiscriminatorMap(['admin' => Admin::class, 'user' => User::class])]
 abstract class AbstractMembre
 {
