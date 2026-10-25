@@ -24,6 +24,10 @@ class Caisse
     #[ORM\OneToMany(targetEntity: Pret::class, mappedBy: 'caisse')]
     private Collection $yes;
 
+    #[ORM\OneToOne(inversedBy: 'caisse', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Groupement $groupement = null;
+
     public function __construct()
     {
         $this->yes = new ArrayCollection();
@@ -72,6 +76,18 @@ class Caisse
                 $ye->setCaisse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGroupement(): ?Groupement
+    {
+        return $this->groupement;
+    }
+
+    public function setGroupement(Groupement $groupement): static
+    {
+        $this->groupement = $groupement;
 
         return $this;
     }
