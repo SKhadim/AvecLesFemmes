@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PretRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,6 +35,17 @@ class Pret
     #[ORM\ManyToOne(inversedBy: 'yes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Caisse $caisse = null;
+
+    /**
+     * @var Collection<int, Remboursement>
+     */
+    #[ORM\OneToMany(targetEntity: Remboursement::class, mappedBy: 'pret')]
+    private Collection $remboursements;
+
+    public function __construct()
+    {
+        $this->remboursements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +120,36 @@ class Pret
     public function setCaisse(?Caisse $caisse): static
     {
         $this->caisse = $caisse;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Remboursement>
+     */
+    public function getRemboursements(): Collection
+    {
+        return $this->remboursements;
+    }
+
+    public function addRemboursement(Remboursement $remboursement): static
+    {
+        if (!$this->remboursements->contains($remboursement)) {
+            $this->remboursements->add($remboursement);
+            $remboursement->setPret($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRemboursement(Remboursement $remboursement): static
+    {
+        if ($this->remboursements->removeElement($remboursement)) {
+            // set the owning side to null (unless already changed)
+            if ($remboursement->getPret() === $this) {
+                $remboursement->setPret(null);
+            }
+        }
 
         return $this;
     }
