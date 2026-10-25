@@ -5,9 +5,11 @@ namespace App\Entity;
 use App\Repository\AbstractCampagneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-#[ORM\DiscriminatorMap(['tontine' => CampagneTontine::class])]
 #[ORM\Entity(repositoryClass: AbstractCampagneRepository::class)]
-class AbstractCampagne
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['tontine' => CampagneTontine::class, 'cotisation' => CampagneCotisation::class])]
+abstract class AbstractCampagne
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
