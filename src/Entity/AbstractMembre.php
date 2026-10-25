@@ -43,9 +43,16 @@ abstract class AbstractMembre
     #[ORM\OneToMany(targetEntity: ModePaiement::class, mappedBy: 'membre')]
     private Collection $yes;
 
+    /**
+     * @var Collection<int, Pret>
+     */
+    #[ORM\OneToMany(targetEntity: Pret::class, mappedBy: 'membre')]
+    private Collection $prets;
+
     public function __construct()
     {
         $this->yes = new ArrayCollection();
+        $this->prets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +156,36 @@ abstract class AbstractMembre
             // set the owning side to null (unless already changed)
             if ($ye->getMembre() === $this) {
                 $ye->setMembre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pret>
+     */
+    public function getPrets(): Collection
+    {
+        return $this->prets;
+    }
+
+    public function addPret(Pret $pret): static
+    {
+        if (!$this->prets->contains($pret)) {
+            $this->prets->add($pret);
+            $pret->setMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removePret(Pret $pret): static
+    {
+        if ($this->prets->removeElement($pret)) {
+            // set the owning side to null (unless already changed)
+            if ($pret->getMembre() === $this) {
+                $pret->setMembre(null);
             }
         }
 
