@@ -85,8 +85,7 @@
         ],
         "bambadieng:cache:clear": "php bin/console cache:clear",
         "bambadieng:make:entity": [
-            "Composer\\Config::disableProcessTimeout",
-            "php bin/console make:entity"
+            "start \"\" /wait cmd /c \"php bin/console make:entity || pause\""
         ],
         "bambadieng:migration": [
             "php bin/console make:migration --no-interaction",
