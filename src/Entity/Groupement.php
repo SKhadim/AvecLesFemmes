@@ -24,9 +24,16 @@ class Groupement
     #[ORM\OneToMany(targetEntity: AbstractMembre::class, mappedBy: 'groupement')]
     private Collection $membres;
 
+    /**
+     * @var Collection<int, AbstractCampagne>
+     */
+    #[ORM\OneToMany(targetEntity: AbstractCampagne::class, mappedBy: 'groupement')]
+    private Collection $campagnes;
+
     public function __construct()
     {
         $this->membres = new ArrayCollection();
+        $this->campagnes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,6 +77,36 @@ class Groupement
             // set the owning side to null (unless already changed)
             if ($membre->getGroupement() === $this) {
                 $membre->setGroupement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AbstractCampagne>
+     */
+    public function getCampagnes(): Collection
+    {
+        return $this->campagnes;
+    }
+
+    public function addGroupement(AbstractCampagne $groupement): static
+    {
+        if (!$this->campagnes->contains($groupement)) {
+            $this->campagnes->add($groupement);
+            $groupement->setGroupement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupement(AbstractCampagne $groupement): static
+    {
+        if ($this->campagnes->removeElement($groupement)) {
+            // set the owning side to null (unless already changed)
+            if ($groupement->getGroupement() === $this) {
+                $groupement->setGroupement(null);
             }
         }
 
