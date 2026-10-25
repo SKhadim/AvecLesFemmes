@@ -7,7 +7,10 @@ use App\Repository\AbstractMembreRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AbstractMembreRepository::class)]
-class AbstractMembre
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['admin' => Admin::class])]
+abstract class AbstractMembre
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
