@@ -6,9 +6,8 @@ use App\Repository\CampagneTontineRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CampagneTontineRepository::class)]
-class CampagneTontine
+class CampagneTontine extends AbstractCampagne
 {
-
 
     #[ORM\Column]
     private ?int $nbreTours = null;
@@ -24,7 +23,6 @@ class CampagneTontine
     public function setNbreTours(int $nbreTours): static
     {
         $this->nbreTours = $nbreTours;
-
         return $this;
     }
 
