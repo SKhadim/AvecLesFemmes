@@ -95,6 +95,7 @@
             "@auto-scripts",
             "@bambadieng:cache:clear"
         ],
+        "bambadieng:fixtures": "php bin/console doctrine:fixtures:load --no-interaction",
         "post-update-cmd": [
             "@auto-scripts",
             "@bambadieng:cache:clear"
@@ -104,7 +105,8 @@
         "bambadieng:db:create": "Supprime la base si elle existe, puis la recrée",
         "bambadieng:cache:clear": "Vide le cache",
         "bambadieng:make:entity": "Crée ou modifie une entité",
-        "bambadieng:migration": "Génère la migration et l'exécute"
+        "bambadieng:migration": "Génère la migration et l'exécute",
+        "bambadieng:fixtures": "Vide la base et charge les fausses données"
     },
     "conflict": {
         "symfony/symfony": "*"
