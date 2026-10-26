@@ -23,6 +23,7 @@ class PretFixtures extends Fixture implements DependentFixtureInterface
             $pret = new Pret();
             $pret->setMontant(random_int(2, 10) * 10000);
             $pret->setDateDemande(new \DateTime('-3 months'));
+            $pret->setDateMontant(new \DateTime('-3 months'));
             $pret->setDateEcheance(new \DateTime('+3 months'));
             $pret->setStatut($statuts[$k % 3]);
             $pret->setMembre($membres[$m]);
