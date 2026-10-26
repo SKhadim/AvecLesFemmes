@@ -12,19 +12,21 @@ use Doctrine\Persistence\ObjectManager;
 class PretFixtures extends Fixture implements DependentFixtureInterface
 {
     public const REF = 'pret_';
-    public const MEMBRES = [0, 4, 8, 12, 16]; // membres qui empruntent
+    public const MEMBRES = [0, 4, 8, 12, 16]; // positions des membres qui empruntent
 
     public function load(ObjectManager $manager): void
     {
+        $membres = $manager->getRepository(AbstractMembre::class)->findBy([], ['id' => 'ASC']);
         $statuts = ['remboursé', 'accordé', 'en attente'];
 
         foreach (self::MEMBRES as $k => $m) {
             $pret = new Pret();
             $pret->setMontant(random_int(2, 10) * 10000);
             $pret->setDateDemande(new \DateTime('-3 months'));
+            $pret->setDateMontant(new \DateTime('-3 months'));
             $pret->setDateEcheance(new \DateTime('+3 months'));
             $pret->setStatut($statuts[$k % 3]);
-            $pret->setMembre($this->getReference(MembreFixtures::REF . $m, AbstractMembre::class));
+            $pret->setMembre($membres[$m]);
             $pret->setCaisse($this->getReference(CaisseFixtures::REF . ($m % 3), Caisse::class));
 
             $manager->persist($pret);

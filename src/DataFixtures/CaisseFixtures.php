@@ -1,4 +1,14 @@
 <?php
+
+
+namespace App\DataFixtures;
+
+use App\Entity\Caisse;
+use App\Entity\Groupement;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+
 class CaisseFixtures extends Fixture implements DependentFixtureInterface
 {
     public const REF = 'caisse_';
@@ -14,6 +24,10 @@ class CaisseFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
+    }
+    public function getDependencies(): array
+    {
+        return [GroupementFixtures::class];
     }
     // ...
 }
