@@ -13,15 +13,14 @@ class ModePaiementFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        for ($c = 0; $c < CampagneFixtures::NB_CAMPAGNES; $c++) {
-            $campagne = $this->getReference(CampagneFixtures::REF . $c, AbstractCampagne::class);
+        $campagnes = $manager->getRepository(AbstractCampagne::class)->findBy([], ['id' => 'ASC']);
+        $membres = $manager->getRepository(AbstractMembre::class)->findBy([], ['id' => 'ASC']);
 
-            for ($m = 0; $m < MembreFixtures::NB_MEMBRES; $m++) {
+        foreach ($campagnes as $c => $campagne) {
+            foreach ($membres as $m => $membre) {
                 if ($m % 3 !== $c % 3) {
-                    continue; // autre groupement
+                    continue; // le membre est dans un autre groupement
                 }
-
-                $membre = $this->getReference(MembreFixtures::REF . $m, AbstractMembre::class);
 
                 $modePaiement = new ModePaiement();
                 $modePaiement->setLibre(random_int(0, 1) === 1);

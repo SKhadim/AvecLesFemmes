@@ -42,6 +42,9 @@ class Pret
     #[ORM\OneToMany(targetEntity: Remboursement::class, mappedBy: 'pret')]
     private Collection $remboursements;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTime $dateDemande = null;
+
     public function __construct()
     {
         $this->remboursements = new ArrayCollection();
@@ -150,6 +153,18 @@ class Pret
                 $remboursement->setPret(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateDemande(): ?\DateTime
+    {
+        return $this->dateDemande;
+    }
+
+    public function setDateDemande(\DateTime $dateDemande): static
+    {
+        $this->dateDemande = $dateDemande;
 
         return $this;
     }
