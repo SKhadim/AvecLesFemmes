@@ -33,10 +33,17 @@ class Groupement
     #[ORM\OneToOne(mappedBy: 'groupement', cascade: ['persist', 'remove'])]
     private ?Caisse $caisse = null;
 
+    /**
+     * @var Collection<int, Exercice>
+     */
+    #[ORM\OneToMany(targetEntity: Exercice::class, mappedBy: 'groupement')]
+    private Collection $exercices;
+
     public function __construct()
     {
         $this->membres = new ArrayCollection();
         $this->campagnes = new ArrayCollection();
+        $this->exercices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +136,36 @@ class Groupement
         }
 
         $this->caisse = $caisse;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Exercice>
+     */
+    public function getExercices(): Collection
+    {
+        return $this->exercices;
+    }
+
+    public function addExercice(Exercice $exercice): static
+    {
+        if (!$this->exercices->contains($exercice)) {
+            $this->exercices->add($exercice);
+            $exercice->setGroupement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExercice(Exercice $exercice): static
+    {
+        if ($this->exercices->removeElement($exercice)) {
+            // set the owning side to null (unless already changed)
+            if ($exercice->getGroupement() === $this) {
+                $exercice->setGroupement(null);
+            }
+        }
 
         return $this;
     }
