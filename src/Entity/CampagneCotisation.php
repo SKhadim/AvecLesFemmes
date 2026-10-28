@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CampagneCotisationRepository::class)]
 class CampagneCotisation extends AbstractCampagne
 {
-    
+
 
     #[ORM\Column(length: 255)]
     private ?string $motif = null;
