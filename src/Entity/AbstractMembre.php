@@ -7,13 +7,14 @@ use App\Repository\AbstractMembreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Trait\DateTimeTrait;
 #[ORM\Entity(repositoryClass: AbstractMembreRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['admin' => Admin::class, 'user' => User::class])]
 abstract class AbstractMembre
 {
+    use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
