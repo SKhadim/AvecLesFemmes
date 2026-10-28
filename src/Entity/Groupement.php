@@ -39,6 +39,12 @@ class Groupement
     #[ORM\OneToMany(targetEntity: Exercice::class, mappedBy: 'groupement')]
     private Collection $exercices;
 
+    #[ORM\Column(length: 20)]
+    private ?string $tel = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $adresse = null;
+
     public function __construct()
     {
         $this->membres = new ArrayCollection();
@@ -166,6 +172,30 @@ class Groupement
                 $exercice->setGroupement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(string $tel): static
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): static
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }
