@@ -5,11 +5,12 @@ namespace App\Entity;
 use App\Enum\PresenceMembre;
 use App\Repository\CotisationRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Trait\DateTimeTrait;
 #[ORM\Entity(repositoryClass: CotisationRepository::class)]
 #[ORM\UniqueConstraint(name: 'uniq_seance_membre', columns: ['seance_id', 'membre_id'])]
 class Cotisation
 {
+    use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

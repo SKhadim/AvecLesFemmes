@@ -4,10 +4,11 @@ namespace App\Entity;
 
 use App\Repository\AmendeRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Trait\DateTimeTrait;
 #[ORM\Entity(repositoryClass: AmendeRepository::class)]
 class Amende
 {
+    use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
