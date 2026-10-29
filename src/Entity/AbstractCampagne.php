@@ -43,9 +43,11 @@ abstract class AbstractCampagne
     #[ORM\OneToMany(targetEntity: ModePaiement::class, mappedBy: 'campagne')]
     private Collection $yes;
 
-    #[ORM\ManyToOne(inversedBy: 'campagnes')]
+    #[ORM\ManyToOne(inversedBy: 'abstractCampagnes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Groupement $groupement = null;
+    private ?Exercice $exercice = null;
+
+
 
     public function __construct()
     {
@@ -136,15 +138,17 @@ abstract class AbstractCampagne
         return $this;
     }
 
-    public function getGroupement(): ?Groupement
+    public function getExercice(): ?Exercice
     {
-        return $this->groupement;
+        return $this->exercice;
     }
 
-    public function setGroupement(?Groupement $groupement): static
+    public function setExercice(?Exercice $exercice): static
     {
-        $this->groupement = $groupement;
+        $this->exercice = $exercice;
 
         return $this;
     }
+
+
 }

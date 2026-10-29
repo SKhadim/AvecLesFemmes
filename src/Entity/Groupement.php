@@ -27,11 +27,6 @@ class Groupement
     #[ORM\OneToMany(targetEntity: AbstractMembre::class, mappedBy: 'groupement')]
     private Collection $membres;
 
-    /**
-     * @var Collection<int, AbstractCampagne>
-     */
-    #[ORM\OneToMany(targetEntity: AbstractCampagne::class, mappedBy: 'groupement')]
-    private Collection $campagnes;
 
     #[ORM\OneToOne(mappedBy: 'groupement', cascade: ['persist', 'remove'])]
     private ?Caisse $caisse = null;
@@ -51,7 +46,6 @@ class Groupement
     public function __construct()
     {
         $this->membres = new ArrayCollection();
-        $this->campagnes = new ArrayCollection();
         $this->exercices = new ArrayCollection();
         $this->initializeTimestamps();
     }
@@ -103,13 +97,6 @@ class Groupement
         return $this;
     }
 
-    /**
-     * @return Collection<int, AbstractCampagne>
-     */
-    public function getCampagnes(): Collection
-    {
-        return $this->campagnes;
-    }
 
     public function addGroupement(AbstractCampagne $groupement): static
     {
