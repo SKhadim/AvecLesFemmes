@@ -12,7 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['tontine' => CampagneTontine::class, 'cotisation' => CampagneCotisation::class])]
+#[ORM\DiscriminatorMap([
+    'tontine' => CampagneTontine::class,
+    'cotisation' => CampagneCotisation::class,
+    'calebasse' => CampagneCalebasse::class,
+])]
 abstract class AbstractCampagne
 {
     use DateTimeTrait;
