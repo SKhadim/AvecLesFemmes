@@ -55,11 +55,18 @@ abstract class AbstractMembre
     #[ORM\JoinColumn(nullable: false)]
     private ?Groupement $groupement = null;
 
+    /**
+     * @var Collection<int, Cotisation>
+     */
+    #[ORM\OneToMany(targetEntity: Cotisation::class, mappedBy: 'membre')]
+    private Collection $cotisations;
+
     public function __construct()
     {
         $this->yes = new ArrayCollection();
         $this->prets = new ArrayCollection();
         $this->initializeTimestamps();
+        $this->cotisations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -207,6 +214,36 @@ abstract class AbstractMembre
     public function setGroupement(?Groupement $groupement): static
     {
         $this->groupement = $groupement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cotisation>
+     */
+    public function getCotisations(): Collection
+    {
+        return $this->cotisations;
+    }
+
+    public function addCotisation(Cotisation $cotisation): static
+    {
+        if (!$this->cotisations->contains($cotisation)) {
+            $this->cotisations->add($cotisation);
+            $cotisation->setMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCotisation(Cotisation $cotisation): static
+    {
+        if ($this->cotisations->removeElement($cotisation)) {
+            // set the owning side to null (unless already changed)
+            if ($cotisation->getMembre() === $this) {
+                $cotisation->setMembre(null);
+            }
+        }
 
         return $this;
     }
