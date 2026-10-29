@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Trait\DateTimeTrait;
 use App\Enum\StatutExercice;
 use App\Repository\ExerciceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExerciceRepository::class)]
@@ -34,6 +36,17 @@ class Exercice
 
     #[ORM\Column(enumType: StatutExercice::class)]
     private ?StatutExercice $statut = null;
+
+    /**
+     * @var Collection<int, AbstractCampagne>
+     */
+    #[ORM\OneToMany(targetEntity: AbstractCampagne::class, mappedBy: 'exercice')]
+    private Collection $abstractCampagnes;
+
+    public function __construct()
+    {
+        $this->abstractCampagnes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,6 +121,36 @@ class Exercice
     public function setStatut(StatutExercice $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AbstractCampagne>
+     */
+    public function getAbstractCampagnes(): Collection
+    {
+        return $this->abstractCampagnes;
+    }
+
+    public function addAbstractCampagne(AbstractCampagne $abstractCampagne): static
+    {
+        if (!$this->abstractCampagnes->contains($abstractCampagne)) {
+            $this->abstractCampagnes->add($abstractCampagne);
+            $abstractCampagne->setExercice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbstractCampagne(AbstractCampagne $abstractCampagne): static
+    {
+        if ($this->abstractCampagnes->removeElement($abstractCampagne)) {
+            // set the owning side to null (unless already changed)
+            if ($abstractCampagne->getExercice() === $this) {
+                $abstractCampagne->setExercice(null);
+            }
+        }
 
         return $this;
     }
