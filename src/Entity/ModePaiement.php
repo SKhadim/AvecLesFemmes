@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Trait\DateTimeTrait;
 use App\Repository\ModePaiementRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Trait\DateTimeTrait;
 #[ORM\UniqueConstraint(name: 'uniq_campagne_membre', columns: ['campagne_id', 'membre_id'])]
 #[ORM\Entity(repositoryClass: ModePaiementRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class ModePaiement
 {
     use DateTimeTrait;

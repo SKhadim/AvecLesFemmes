@@ -4,9 +4,12 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Groupement;
 
 class GroupementFixtures extends Fixture
 {
+    public const REF = 'groupement_';
+
     public function load(ObjectManager $manager): void
     {
         $data = [
@@ -23,6 +26,7 @@ class GroupementFixtures extends Fixture
                         ->setTel($tel)
                         ->setAdresse($adresse);
             $manager->persist($groupement);
+            $this->addReference(self::REF . $key, $groupement);
         }
         // $product = new Product();
         // $manager->persist($product);

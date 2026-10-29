@@ -8,6 +8,7 @@ use App\Repository\ExerciceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExerciceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Exercice
 {
     use DateTimeTrait;

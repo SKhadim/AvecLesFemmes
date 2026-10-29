@@ -4,7 +4,8 @@ namespace App\Trait;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait DateTimeTrait {
+trait DateTimeTrait
+{
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
 
@@ -12,14 +13,14 @@ trait DateTimeTrait {
     private ?\DateTime $updateAt = null;
 
     #[ORM\PrePersist]
-    private function initDate(): void
+    public function initializeTimestamps(): void
     {
-        $this->createAt = new \DateTimeImmutable();
-        $this->updateAt = new \DateTime();
+        $this->createAt ??= new \DateTimeImmutable();
+        $this->updateAt ??= new \DateTime();
     }
 
     #[ORM\PreUpdate]
-    private function updateDate(): void
+    public function updateTimestamp(): void
     {
         $this->updateAt = new \DateTime();
     }

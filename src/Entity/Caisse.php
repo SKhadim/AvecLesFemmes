@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Trait\DateTimeTrait;
 use App\Repository\CaisseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Trait\DateTimeTrait;
 #[ORM\Entity(repositoryClass: CaisseRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Caisse
 {
     use DateTimeTrait;
@@ -32,6 +33,7 @@ class Caisse
     public function __construct()
     {
         $this->yes = new ArrayCollection();
+        $this->initializeTimestamps();
     }
 
     public function getId(): ?int
