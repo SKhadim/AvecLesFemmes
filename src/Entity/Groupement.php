@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
+use App\Trait\DateTimeTrait;
 use App\Repository\GroupementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupementRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Groupement
 {
+    use DateTimeTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -50,6 +54,7 @@ class Groupement
         $this->membres = new ArrayCollection();
         $this->campagnes = new ArrayCollection();
         $this->exercices = new ArrayCollection();
+        $this->initializeTimestamps();
     }
 
     public function getId(): ?int

@@ -2,17 +2,21 @@
 
 namespace App\Entity;
 
+use App\Trait\DateTimeTrait;
 use App\Repository\AbstractCampagneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AbstractCampagneRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['tontine' => CampagneTontine::class, 'cotisation' => CampagneCotisation::class])]
 abstract class AbstractCampagne
 {
+    use DateTimeTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,13 +40,14 @@ abstract class AbstractCampagne
     #[ORM\OneToMany(targetEntity: ModePaiement::class, mappedBy: 'campagne')]
     private Collection $yes;
 
-    #[ORM\ManyToOne(inversedBy: 'groupements')]
+    #[ORM\ManyToOne(inversedBy: 'campagnes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Groupement $groupement = null;
 
     public function __construct()
     {
         $this->yes = new ArrayCollection();
+        $this->initializeTimestamps();
     }
 
     public function getId(): ?int

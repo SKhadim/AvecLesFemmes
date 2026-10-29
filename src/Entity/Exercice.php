@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use App\Trait\DateTimeTrait;
 use App\Enum\StatutExercice;
 use App\Repository\ExerciceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExerciceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Exercice
 {
+    use DateTimeTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
