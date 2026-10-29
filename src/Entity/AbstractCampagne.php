@@ -49,10 +49,17 @@ abstract class AbstractCampagne
 
 
 
+    /**
+     * @var Collection<int, Seance>
+     */
+    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'campagne')]
+    private Collection $seances;
+
     public function __construct()
     {
         $this->yes = new ArrayCollection();
         $this->initializeTimestamps();
+        $this->seances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,5 +157,33 @@ abstract class AbstractCampagne
         return $this;
     }
 
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
 
+    public function addSeance(Seance $seance): static
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances->add($seance);
+            $seance->setCampagne($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): static
+    {
+        if ($this->seances->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getCampagne() === $this) {
+                $seance->setCampagne(null);
+            }
+        }
+
+        return $this;
+    }
 }
