@@ -38,7 +38,7 @@ abstract class AbstractCampagne
     #[ORM\OneToMany(targetEntity: ModePaiement::class, mappedBy: 'campagne')]
     private Collection $yes;
 
-    #[ORM\ManyToOne(inversedBy: 'groupements')]
+    #[ORM\ManyToOne(inversedBy: 'campagnes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Groupement $groupement = null;
 
