@@ -496,17 +496,22 @@ tbody tr:last-child td { border-bottom: 0; }
         </thead>
         <tbody>
             {% for groupement in dataGroupements %}
+              {% set exercice = groupement.exercices|first %}
           <tr>
             <td>
               <a class="nom-groupement" href="#fiche-benkadi">{{groupement.nom}}</a>
-              <span class="discret">{{groupement.adresse}}</span>
+              <span class="discret">{{ groupement.adresse ?: 'Adresse non renseignée' }}</span>
             </td>
             <td>{{groupement.tel}}</td>
             <td>
-              <span class="statut statut--en_cours">{{groupement.exercices[0].statut.label}}</span>
-              <span class="discret">depuis le {{groupement.exercices[0].debutAt|format_date('long')}}</span>
+              {% if exercice %}
+                <span class="statut statut--en_cours">{{exercice.statut.label}}</span>
+                <span class="discret">depuis le {{exercice.debutAt|format_date('long')}}</span>
+              {% else %}
+                <span class="discret">Aucun exercice</span>
+              {% endif %}
             </td>
-            <td class="nombre">3</td>
+            <td class="nombre">{{groupement.exercices|length}}</td>
             <td><a href="#fiche-benkadi">Voir la fiche</a></td>
           </tr>
           {% endfor %}
